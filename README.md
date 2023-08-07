@@ -1,4 +1,4 @@
-# LangV 视频分享订阅网站      
+# TecHub 教学视频分享订阅网站      
 一个基于SpringBoot、Mybatis-Plus、ffmpeg、Redis、mysql、vue.js的视频分享订阅网站，实现了一个视频网站的上传视频、播放视频、个人主页、订阅、评论、订阅评论通知等基本功能,用于教育视频投放，现正在实习开发中。
  <br>
  演示地址：https://mch6xzsh3.neiwangyun.net/ <br><br>
