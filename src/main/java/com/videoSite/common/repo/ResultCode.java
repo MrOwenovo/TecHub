@@ -22,20 +22,6 @@ public enum ResultCode {
 
     REGISTER_SUCCESS(200, "注册成功"),
 
-    CREATE_ROOM_SUCCESS(200, "创建房间成功"),
-
-    OPPONENT_IS_IN(200, "对手已经加入房间!"),
-
-    ADD_ROOM_SUCCESS(200, "加入房间成功!"),
-
-    WHITE_MOVE_SUCCESS(200, "解析白棋行动成功!"),
-
-    BLACK_MOVE_SUCCESS(200, "解析黑棋行动成功!"),
-
-    WAIT_WHITE_MOVE_SUCCESS(200, "白棋已经下子!"),
-
-    WAIT_BLACK_MOVE_SUCCESS(200, "黑棋已经下子!"),
-
     JSESSIONID_IS_RETURN(200,"已经将jSessionId返回"),
 
     MODIFY_SUCCESS(200,"修改成功!"),
@@ -66,12 +52,6 @@ public enum ResultCode {
     VERIFY_WRONG(407, "验证码错误!"),
 
     OPPONENT_NOT_IN(408, "正在等待...!"),
-
-    ADD_ROOM_FAILURE(409, "加入房间失败"),
-
-    WHITE_MOVE_FAILURE(410, "解析白棋行动失败"),
-
-    BLACK_MOVE_FAILURE(411, "解析黑棋行动失败"),
 
     THREAD_LOCAL_IS_NULL(412, "从ThreadLocal中取出为空时抛出的异常"),
 

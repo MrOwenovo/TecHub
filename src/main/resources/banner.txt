@@ -1,0 +1,8 @@
+   ⚜️✨🌟   ${AnsiColor.BRIGHT_YELLOW}𝓣𝓮𝓬𝓗𝓾𝓫   ${AnsiColor.BRIGHT_WHITE}🌟✨⚜️
+  _____         _   _       _
+ |_   _|__  ___| | | |_   _| |__
+   | |/ _ \/ __| |_| | | | | '_ \
+   | |  __/ (__|  _  | |_| | |_) |
+   |_|\___|\___|_| |_|\__,_|_.__/
+   ⚜️✨🌟   ${AnsiColor.BRIGHT_YELLOW}𝓣𝓮𝓬𝓗𝓾𝓫   ${AnsiColor.BRIGHT_WHITE}🌟✨⚜️
+   ${AnsiColor.GREEN}:: Spring Boot ::                (v2.4.2)

@@ -25,7 +25,7 @@ class VideoSiteApplicationTests {
 	MyVideoPath myVideoPath;
 	@Test
 	void contextLoads() {
-		System.out.println(VideoUtils.getVideoTime("C:\\Users\\非洲吴彦祖\\Desktop\\final.mp4"));
+		System.out.println(VideoUtils.getVideoTime("C:\\Users\\Desktop\\final.mp4"));
 		}
     @Test
 	void  test(){

@@ -1,5 +1,7 @@
 
 spring:
+  banner:
+    location: classpath:banner.txt
   mvc:
     favicon:
       enabled=false
@@ -30,6 +32,15 @@ my-oss:
   BUCKET_IP: management-5.oss-cn-chengdu.aliyuncs.com
 #自定义用户临时存放视频及图片的文件夹
 my-video-path:
-  MYPATH: "C:\\videoSite\\"
+  MYPATH: "D:\\videoSite\\"
 server:
   port: 8080
+springfox:
+  documentation:
+    swagger-ui:
+      enabled: true
+  springfox-boot-starter:
+    swagger-ui:
+      operationsSorter: method
+      configUrl: /api-docs/swagger-config
+

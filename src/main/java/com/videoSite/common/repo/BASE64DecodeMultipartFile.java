@@ -1,13 +1,20 @@
 package com.videoSite.common.repo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Decoder;
 
 import java.io.*;
+import java.util.Random;
 
+@ApiModel("BASE64编码图片转换为MultipartFile对象")
 public class BASE64DecodeMultipartFile implements MultipartFile {
 
+    @ApiModelProperty("图片内容")
     private final byte[] imgContent;
+
+    @ApiModelProperty("图片的BASE64编码头部信息")
     private final String header;
 
     public BASE64DecodeMultipartFile(byte[] imgContent, String header) {
@@ -17,12 +24,12 @@ public class BASE64DecodeMultipartFile implements MultipartFile {
 
     @Override
     public String getName() {
-        return System.currentTimeMillis() + Math.random() + "." + header.split("/")[1];
+        return System.currentTimeMillis() + "_" + new Random().nextInt(10000) + "." + header.split("/")[1];
     }
 
     @Override
     public String getOriginalFilename() {
-        return System.currentTimeMillis() +  Math.random() * 10000 + "." + header.split("/")[1];
+        return System.currentTimeMillis() + "_" + new Random().nextInt(10000) + "." + header.split("/")[1];
     }
 
     @Override
@@ -55,13 +62,17 @@ public class BASE64DecodeMultipartFile implements MultipartFile {
         new FileOutputStream(dest).write(imgContent);
     }
 
+    /**
+     * 将BASE64编码的图片转换为MultipartFile对象
+     * @param base64 BASE64编码的图片数据
+     * @return MultipartFile对象
+     */
     public static MultipartFile base64ToMultipart(String base64) {
         try {
             String[] baseStrs = base64.split(",");
 
             BASE64Decoder decoder = new BASE64Decoder();
-            byte[] b = new byte[0];
-            b = decoder.decodeBuffer(baseStrs[1]);
+            byte[] b = decoder.decodeBuffer(baseStrs[1]);
 
             for (int i = 0; i < b.length; ++i) {
                 if (b[i] < 0) {
@@ -75,21 +86,3 @@ public class BASE64DecodeMultipartFile implements MultipartFile {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

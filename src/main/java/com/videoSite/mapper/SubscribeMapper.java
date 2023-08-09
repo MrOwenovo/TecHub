@@ -9,14 +9,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
-/**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author 关注公众号：MarkerHub
- * @since 2021-03-17
- */
+
 public interface SubscribeMapper extends BaseMapper<Subscribe> {
 
 

@@ -1,44 +1,33 @@
 package com.videoSite.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-
-/**
- * <p>
- * 
- * </p>
- *
- * @author 关注公众号：MarkerHub
- * @since 2021-03-22
- */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("m_comment")
+@ApiModel("评论实体")
 public class Comment implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
+    @ApiModelProperty("评论ID")
     private Long id;
 
+    @ApiModelProperty("视频ID")
     private Long video_id;
 
+    @ApiModelProperty("视频所有者用户名")
     private String video_username;
 
+    @ApiModelProperty("评论者用户名")
     private String commentator;
 
+    @ApiModelProperty("评论时间")
     private Date commentTime;
 
+    @ApiModelProperty("评论内容")
     private String commentInfo;
-
-
 }

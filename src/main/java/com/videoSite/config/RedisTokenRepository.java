@@ -1,5 +1,7 @@
 package com.videoSite.config;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -14,10 +16,11 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * springSecurity RememberMe的token 储存在redis
+ * Spring Security RememberMe 的 Token 存储在 Redis 中的实现
  */
 @Slf4j
 @Configuration
+@Api(tags = "Spring Security RememberMe Token 存储", description = "Spring Security RememberMe 的 Token 存储在 Redis 中的实现")
 public class RedisTokenRepository implements PersistentTokenRepository {
 
     private final static String REMEMBER_ME_KEY = "spring:security:rememberMe:";
@@ -27,15 +30,15 @@ public class RedisTokenRepository implements PersistentTokenRepository {
 
     @PostConstruct
     private void init() {
-        log.info("存储Spring-RememberMe缓存的Redis配置加载");;
+        log.info("存储 Spring-RememberMe 缓存的 Redis 配置加载");
     }
 
-    //由于PersistentRememberMeToken没有实现序列化接口，这里用Map存放
+    @ApiOperation("获取 Token")
     private PersistentRememberMeToken getToken(String series) {
         Map<Object, Object> map = tokenTemplate.opsForHash().entries(series);
         if (map.isEmpty()) return null;
         Object date = map.get("date");
-        if (date==null) return null;
+        if (date == null) return null;
         return new PersistentRememberMeToken(
                 (String) map.get("username"),
                 (String) map.get("series"),
@@ -44,6 +47,7 @@ public class RedisTokenRepository implements PersistentTokenRepository {
         );
     }
 
+    @ApiOperation("设置 Token")
     private void setTokenTemplate(PersistentRememberMeToken token) {
         Map<Object, Object> map = new HashMap<>();
         map.put("username", token.getUsername());
@@ -54,13 +58,14 @@ public class RedisTokenRepository implements PersistentTokenRepository {
         tokenTemplate.expire(REMEMBER_ME_KEY + map.get("series"), 1, TimeUnit.DAYS);
     }
 
-
+    @ApiOperation("创建新 Token")
     @Override
     public void createNewToken(PersistentRememberMeToken token) {
         tokenTemplate.opsForValue().set(REMEMBER_ME_KEY + "name:" + token.getUsername(), token.getSeries());
         tokenTemplate.expire(REMEMBER_ME_KEY + "name:" + token.getUsername(), 1, TimeUnit.DAYS);
     }
 
+    @ApiOperation("更新 Token")
     @Override
     public void updateToken(String series, String tokenValue, Date lastUsed) {
         PersistentRememberMeToken token = getToken(series);
@@ -68,17 +73,17 @@ public class RedisTokenRepository implements PersistentTokenRepository {
             this.setTokenTemplate(new PersistentRememberMeToken(token.getUsername(), series, tokenValue, lastUsed));
     }
 
+    @ApiOperation("根据 Series 获取 Token")
     @Override
     public PersistentRememberMeToken getTokenForSeries(String seriesId) {
         return getToken(seriesId);
     }
 
-    //通过username找series直接删两个
+    @ApiOperation("移除用户 Token")
     @Override
     public void removeUserTokens(String username) {
-         String series= (String) tokenTemplate.opsForValue().get(REMEMBER_ME_KEY + "name:" + username);
+        String series = (String) tokenTemplate.opsForValue().get(REMEMBER_ME_KEY + "name:" + username);
         tokenTemplate.delete(REMEMBER_ME_KEY + "name:" + username);
         tokenTemplate.delete(REMEMBER_ME_KEY + series);
-
     }
 }

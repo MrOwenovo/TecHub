@@ -16,6 +16,8 @@ import com.videoSite.entity.Video;
 import com.videoSite.service.VideoService;
 import com.videoSite.utils.FFmpegUtils;
 import com.videoSite.utils.RedisUtils;
+import io.swagger.annotations.*;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,12 +30,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author 关注公众号：MarkerHub
- * @since 2021-03-10
- */
+
 @Controller
 @RequestMapping("/video")
+@Api(tags = "视频管理", description = "处理视频相关操作")
 public class VideoController {
 
     @Autowired
@@ -47,6 +47,8 @@ public class VideoController {
     @Autowired
     MyVideoPath myVideoPath;
 
+    @ApiOperation(value = "获取所有视频信息", notes = "分页获取所有视频信息")
+    @ApiImplicitParam(name = "pageNum", value = "页码", required = true, dataType = "Integer",dataTypeClass = Integer.class,paramType = "path")
     @GetMapping("/getAllVideos/{pageNum}")
     @ResponseBody
     public IPage<Video> getAllVideo(@PathVariable(value = "pageNum",required = false) Integer pageNum){
@@ -55,6 +57,11 @@ public class VideoController {
         return page;
     }
 
+    @ApiOperation(value = "根据关键字搜索视频", notes = "分页根据标题关键字搜索视频信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum", value = "页码", required = true, dataType = "Integer",dataTypeClass = Integer.class,paramType = "path"),
+            @ApiImplicitParam(name = "title", value = "标题关键字", required = true, dataType = "String",dataTypeClass = String.class,paramType = "path")
+    })
     @GetMapping("/getKeyVideos/{pageNum}/{title}")
     @ResponseBody
     public IPage<Video> getKeyVideos(@PathVariable(value = "pageNum",required = false) Integer pageNum,
@@ -64,6 +71,8 @@ public class VideoController {
         return page;
     }
 
+    @ApiOperation(value = "跳转到视频播放页面", notes = "跳转到指定视频的播放页面")
+    @ApiImplicitParam(name = "videoId", value = "视频ID", required = true, dataType = "Integer",dataTypeClass = Integer.class,paramType = "path")
     @GetMapping("/toVideo/{videoId}")
     public String toVideo(@PathVariable("videoId")Integer videoId, ModelMap modelMap) {
         Video video = videoService.getById(videoId);
@@ -78,6 +87,12 @@ public class VideoController {
         return "video/video";
     }
 
+    @ApiOperation(value = "根据视频ID获取视频信息", notes = "根据视频ID获取视频详细信息")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "获取成功"),
+            @ApiResponse(code = 404, message = "视频不存在")
+    })
+    @ApiImplicitParam(name = "videoId", value = "视频ID", required = true, dataType = "Integer",dataTypeClass = Integer.class,paramType = "path")
     @GetMapping("/getVideoInfo/{videoId}")
     @ResponseBody
     public Video getVideoInfo(@PathVariable("videoId") Integer videoId){
@@ -85,6 +100,12 @@ public class VideoController {
         return video;
     }
 
+    @ApiOperation(value = "添加视频", notes = "上传视频并添加视频信息")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "上传成功"),
+            @ApiResponse(code = 400, message = "上传失败")
+    })
+    @ApiImplicitParam(name = "videoDto", value = "视频信息", required = true, dataType = "VideoDto",dataTypeClass = VideoDto.class)
     @PostMapping("/addVideo")
     @ResponseBody
     public String addVideo( VideoDto videoDto) throws IOException {
@@ -157,6 +178,15 @@ public class VideoController {
         return "上传失败";
     }
 
+    @ApiOperation(value = "获取用户发布的视频", notes = "分页获取指定用户发布的视频信息")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "获取成功"),
+            @ApiResponse(code = 404, message = "用户不存在")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum", value = "页码", required = true, dataType = "Integer",dataTypeClass = Integer.class,paramType = "path"),
+            @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "String",dataTypeClass = String.class,paramType = "path")
+    })
     @GetMapping("/get7VideosInfoPerPageByUsername/{pageNum}/{username}")
     @ResponseBody
     public  IPage<Video> get7VideosInfoPerPageByUsername(@PathVariable(value = "pageNum",required = false) Integer pageNum,@PathVariable("username") String username){
@@ -164,6 +194,15 @@ public class VideoController {
         IPage<Video> page = videoService.page(videoPage, new QueryWrapper<Video>().eq("username", username).orderByDesc("id"));
         return page;
     }
+    @ApiOperation(value = "分页获取用户发布的8条视频信息", notes = "分页获取指定用户发布的8条视频信息，排除状态为2的视频")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "获取成功"),
+            @ApiResponse(code = 404, message = "用户不存在")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum", value = "页码", required = true, dataType = "Integer",dataTypeClass = Integer.class,paramType = "path"),
+            @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "String",dataTypeClass = String.class,paramType = "path")
+    })
     @GetMapping("/get8VideosInfoPerPageByUsername/{pageNum}/{username}")
     @ResponseBody
     public  IPage<Video> get8VideosInfoPerPageByUsername(@PathVariable(value = "pageNum",required = false) Integer pageNum,@PathVariable("username") String username){
@@ -171,6 +210,15 @@ public class VideoController {
         IPage<Video> page = videoService.page(videoPage, new QueryWrapper<Video>().eq("username", username).ne("status",2).orderByDesc("id"));
         return page;
     }
+    @ApiOperation(value = "分页获取用户发布的8条视频信息", notes = "分页获取指定用户发布的8条视频信息")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "获取成功"),
+            @ApiResponse(code = 404, message = "用户不存在")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum", value = "页码", required = true, dataType = "Integer",dataTypeClass = Integer.class,paramType = "path"),
+            @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "String",dataTypeClass = String.class,paramType = "path")
+    })
     @GetMapping("/getOwn8VideosInfoPerPageByUsername/{pageNum}/{username}")
     @ResponseBody
     public  IPage<Video> getOwn8VideosInfoPerPageByUsername(@PathVariable(value = "pageNum",required = false) Integer pageNum,@PathVariable("username") String username){
@@ -179,6 +227,12 @@ public class VideoController {
         return page;
     }
 
+    @ApiOperation(value = "根据视频ID获取视频信息", notes = "根据视频ID获取视频详细信息")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "获取成功"),
+            @ApiResponse(code = 404, message = "视频不存在")
+    })
+    @ApiImplicitParam(name = "videoId", value = "视频ID", required = true, dataType = "Integer",dataTypeClass = Integer.class,paramType = "path")
     @GetMapping("/getVideoInfoById/{videoId}")
     @ResponseBody
     public Video getVideoInfoById(@PathVariable("videoId") Integer videoId){
@@ -186,6 +240,12 @@ public class VideoController {
         return  videoInfo;
     }
 
+    @ApiOperation(value = "根据用户名获取置顶视频信息", notes = "根据用户名获取已置顶的视频信息")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "获取成功"),
+            @ApiResponse(code = 404, message = "用户不存在或没有置顶视频")
+    })
+    @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "String",dataTypeClass = String.class,paramType = "path")
     @GetMapping("/getTopVideoInfoByUsernameAndStatus/{username}")
     @ResponseBody
     public Video getTopVideoInfoByUsername(@PathVariable("username") String username){
@@ -196,6 +256,8 @@ public class VideoController {
        return videoInfo;
     }
 
+    @ApiOperation(value = "设置视频置顶状态", notes = "将指定视频设置为置顶状态")
+    @ApiImplicitParam(name = "videoId", value = "视频ID", required = true, dataType = "long",dataTypeClass = Long.class,paramType = "path")
     @GetMapping("/setTopVideoStatus/{videoId}")
     @ResponseBody
     public void setTopVideoStatus(@PathVariable("videoId")long videoId){
@@ -205,12 +267,13 @@ public class VideoController {
 
     }
 
-    @GetMapping("/cancelTopVideoStatus/{videoId}")
-    @ResponseBody
-    public void cancelTopVideoStatus(@PathVariable("videoId") long videoId){
-        Video video=new Video();
+    @ApiOperation(value = "取消视频置顶状态", notes = "将指定视频的置顶状态取消")
+    @ApiImplicitParam(name = "videoId", value = "视频ID", required = true, dataType = "long",dataTypeClass = Long.class,paramType = "path")
+    @PostMapping("/cancelTopVideoStatus/{videoId}")
+    public void cancelTopVideoStatus(@PathVariable("videoId") long videoId) {
+        Video video = new Video();
         video.setStatus(0);
-        videoService.update(video,new QueryWrapper<Video>().eq("id",videoId));
+        videoService.update(video, new QueryWrapper<Video>().eq("id", videoId));
     }
 
 }

@@ -8,7 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import javax.servlet.*;
 import java.io.IOException;
 
-
+/**
+ * 异常拦截过滤器，用于捕获特定异常并进行处理转发。
+ * 当 ThreadLocal 为空或 Redis 中不存在相关信息时，捕获并转发到对应的错误处理控制器。
+ */
 @Slf4j
 @MyFilterOrder(-100)
 public class ExceptionFilter implements Filter {

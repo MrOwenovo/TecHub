@@ -9,21 +9,36 @@ import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@FieldDefaults(makeFinal = true,level = AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 @ApiModel("响应实体封装类")
 public class RestBean<T> {
 
-    @ApiModelProperty("是否成功")
-    @NonNull boolean success;
+    @ApiModelProperty(
+            value = "表示请求是否成功",
+            example = "true",
+            required = true
+    )
+    @NonNull
+    boolean success;
 
-    @ApiModelProperty("状态码")
-    @NonNull int code;
+    @ApiModelProperty(
+            value = "状态码",
+            example = "200",
+            required = true
+    )
+    @NonNull
+    int code;
 
-    @ApiModelProperty("状态码描述信息")
-    @NonNull String message;
+    @ApiModelProperty(
+            value = "状态码描述信息",
+            example = "请求成功"
+    )
+    @NonNull
+    String message;
 
-    @ApiModelProperty("响应实体数据")
-    T data ;
-
+    @ApiModelProperty(
+            value = "响应实体数据"
+    )
+    T data;
 }

@@ -12,11 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
-/**
- * @introduction
- * @author ljz
- * @date 2022年03月25日 12:52
- */
+
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         public void onAuthenticationSuccess(HttpServletRequest request,
                                             HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

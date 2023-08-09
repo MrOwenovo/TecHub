@@ -14,13 +14,6 @@ public class ThreadDetails {
 
     public static ThreadLocal<ServletContext> servletContext = new ThreadLocal<>();
 
-    public static ThreadLocal<String> roomNumber = new ThreadLocal<>();
-
-    public static ThreadLocal<String> redisRoomNumber = new ThreadLocal<>();
-
-    public static ThreadLocal<String> redisUsername = new ThreadLocal<>();
-
-    public static ThreadLocal<String> redisOpponentUsername = new ThreadLocal<>();
 
     public static String getUsername() {
         //获取用户

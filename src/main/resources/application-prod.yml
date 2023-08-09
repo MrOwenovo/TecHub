@@ -1,5 +1,7 @@
 
 spring:
+  banner:
+    location: classpath:banner.txt
   mvc:
     favicon:
       enabled=false
@@ -33,3 +35,11 @@ my-video-path:
   MYPATH: "C:\\videoSite\\"
 server:
   port: 8080
+springfox:
+  documentation:
+    swagger-ui:
+      enabled: true
+  springfox-boot-starter:
+    swagger-ui:
+      operationsSorter: method
+      configUrl: /api-docs/swagger-config
